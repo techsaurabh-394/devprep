@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #cb4154;
+    --primary-dark: #a82e41;
+    --primary-light: #d95f71;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 
+           transition-all duration-300 shadow-lg hover:shadow-xl 
+           hover:shadow-primary-600/20 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 border-2 border-primary-600 text-primary-600 rounded-lg 
+           hover:bg-primary-50 transition-all duration-300;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl 
+           transition-all duration-300 border border-gray-200 dark:border-gray-700;
+  }
+
+  .card-hover {
+    @apply hover:-translate-y-1 hover:shadow-primary-600/10;
+  }
+}
