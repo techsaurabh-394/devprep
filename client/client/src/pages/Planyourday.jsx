@@ -109,12 +109,12 @@ const PlanYourDay = () => {
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Tasks/Calendar Section */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-3">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50"
+              className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-2 border border-gray-700/50"
             >
               {view === "kanban" ? (
                 <div className="h-[600px] overflow-auto">
@@ -125,65 +125,6 @@ const PlanYourDay = () => {
                   <Calendar />
                 </div>
               )}
-            </motion.div>
-          </div>
-
-          {/* Notifications & Quick Actions */}
-          <div className="lg:col-span-1 space-y-6">
-            {/* Notifications */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-semibold flex items-center">
-                  <FaBell className="mr-2 text-yellow-500" />
-                  Notifications
-                </h3>
-                <span className="bg-blue-500 text-white text-sm px-2 py-1 rounded-full">
-                  {notifications.length}
-                </span>
-              </div>
-              <div className="space-y-4">
-                {notifications.map((notif) => (
-                  <motion.div
-                    key={notif.id}
-                    whileHover={{ scale: 1.02 }}
-                    className="p-4 rounded-lg bg-gray-700/50 border border-gray-600/50"
-                  >
-                    <p className="text-sm text-gray-300">{notif.text}</p>
-                    <span className="text-xs text-gray-500 mt-2 block">
-                      {notif.type}
-                    </span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Quick Actions */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="bg-gray-800/50 backdrop-blur-lg rounded-xl p-6 border border-gray-700/50"
-            >
-              <h3 className="text-xl font-semibold mb-4">Quick Actions</h3>
-              <div className="space-y-3">
-                {["Add New Task", "Schedule Meeting", "Set Reminder"].map(
-                  (action, index) => (
-                    <motion.button
-                      key={index}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full p-3 bg-blue-500/20 hover:bg-blue-500/30 rounded-lg text-blue-400 hover:text-blue-300 transition-all"
-                    >
-                      {action}
-                    </motion.button>
-                  )
-                )}
-              </div>
             </motion.div>
           </div>
         </div>
