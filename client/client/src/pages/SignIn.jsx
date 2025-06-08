@@ -26,7 +26,8 @@ const SignIn = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const url = "http://localhost:8080/api/auth/signin";
+      const url =
+        (process.env.REACT_APP_BACKEND_URL || "") + "/api/auth/signin";
       const { data: res } = await axios.post(url, data);
       setShowToast(true);
       login(res.token, res.username);
