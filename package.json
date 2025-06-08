@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "mongodb": "^6.17.0"
+  },
+  "scripts": {
+    "start": "node backend/server.js"
   }
 }
