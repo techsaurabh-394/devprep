@@ -5,8 +5,10 @@ import { FaEnvelope, FaLock, FaGoogle, FaGithub } from "react-icons/fa";
 import axios from "axios";
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -26,8 +28,7 @@ const SignIn = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const url =
-        (process.env.REACT_APP_BACKEND_URL || "") + "/api/auth/signin";
+      const url = (import.meta.env.VITE_BACKEND_URL || "") + "/api/auth/signin";
       const { data: res } = await axios.post(url, data);
       setShowToast(true);
       login(res.token, res.username);
@@ -89,8 +90,8 @@ const SignIn = () => {
                   name="email"
                   type="email"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={data.email}
+                  onChange={(e) => setData({ ...data, email: e.target.value })}
                   className="appearance-none relative block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 
                            placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg
                            focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm
@@ -112,8 +113,10 @@ const SignIn = () => {
                   name="password"
                   type="password"
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={data.password}
+                  onChange={(e) =>
+                    setData({ ...data, password: e.target.value })
+                  }
                   className="appearance-none relative block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600
                            placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-lg
                            focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm

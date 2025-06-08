@@ -5,7 +5,7 @@ const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
 
 const userSchema = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: true,
   },
@@ -21,9 +21,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
+  if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
@@ -44,7 +42,7 @@ const User = mongoose.models.user || mongoose.model("user", userSchema);
 
 const validateUser = (data) => {
   const schema = Joi.object({
-    name: Joi.string().required().label("Name"),
+    username: Joi.string().required().label("Username"),
     email: Joi.string().email().required().label("Email"),
     password: passwordComplexity().required().label("Password"),
   });
