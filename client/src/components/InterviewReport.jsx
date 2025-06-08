@@ -1,6 +1,6 @@
 import React from "react";
 
-const InterviewReport = ({ feedbackData, onClose, onDownload }) => {
+const InterviewReport = ({ feedbackData, onClose }) => {
   const downloadReport = () => {
     // Create report content in markdown format
     const reportContent = `# Interview Report
