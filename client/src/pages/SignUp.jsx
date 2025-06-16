@@ -153,13 +153,13 @@ const SignUp = () => {
           </div>
           <div className="flex flex-col gap-3 mt-6">
             <a
-              href="/api/auth/google"
+              href="https://devprep-e6wc.onrender.com/api/auth/google/callback"
               className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg shadow transition-colors text-base"
             >
               <FaGoogle /> Sign up with Google
             </a>
             <a
-              href="/api/auth/github"
+              href="https://devprep-e6wc.onrender.com/api/auth/github/callback"
               className="flex items-center justify-center gap-2 bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded-lg shadow transition-colors text-base"
             >
               <FaGithub /> Sign up with GitHub
