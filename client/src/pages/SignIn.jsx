@@ -131,13 +131,13 @@ const SignIn = () => {
           </div>
           <div className="flex flex-col gap-3 mt-6">
             <a
-              href="https://devprep-e6wc.onrender.com/api/auth/google/callback"
+              href="https://devprep-e6wc.onrender.com/api/auth/google"
               className="flex items-center justify-center gap-2 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg shadow transition-colors text-base"
             >
               <FaGoogle /> Sign in with Google
             </a>
             <a
-              href="https://devprep-e6wc.onrender.com/api/auth/github/callback"
+              href="https://devprep-e6wc.onrender.com/api/auth/github"
               className="flex items-center justify-center gap-2 bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded-lg shadow transition-colors text-base"
             >
               <FaGithub /> Sign in with GitHub
