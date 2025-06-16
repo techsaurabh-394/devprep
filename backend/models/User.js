@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// Pre-save hook to hash password
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   const salt = await bcrypt.genSalt(10);
@@ -27,11 +28,13 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+// Method to compare password
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-UserSchema.methods.generateAuthToken = function () {
+// ✅ FIXED: Correct schema name here
+userSchema.methods.generateAuthToken = function () {
   return jwt.sign({ id: this._id, email: this.email }, process.env.JWT_SECRET, {
     expiresIn: "1h",
   });
@@ -39,6 +42,7 @@ UserSchema.methods.generateAuthToken = function () {
 
 const User = mongoose.models.user || mongoose.model("user", userSchema);
 
+// Validation with Joi
 const validateUser = (data) => {
   const schema = Joi.object({
     username: Joi.string().required().label("Username"),
