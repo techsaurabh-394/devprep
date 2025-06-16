@@ -12,15 +12,24 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        let user = await User.findOne({ email: profile.emails[0].value });
+        const emailObj = profile.emails && profile.emails[0];
+        if (!emailObj || !emailObj.value) {
+          return done(new Error("Email not available from Google"), null);
+        }
+
+        const email = emailObj.value;
+
+        let user = await User.findOne({ email });
+
         if (!user) {
           user = new User({
-            username: profile.displayName,
-            email: profile.emails[0].value,
-            password: profile.id, // Not used, but required by schema
+            username: profile.displayName || "google-user",
+            email: email,
+            password: profile.id, // not used but schema may require
           });
           await user.save();
         }
+
         return done(null, user);
       } catch (err) {
         return done(err, null);
@@ -29,6 +38,7 @@ passport.use(
   )
 );
 
+// ✅ Only needed if using express-session
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
