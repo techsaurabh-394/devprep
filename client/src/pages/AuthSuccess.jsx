@@ -1,3 +1,4 @@
+// src/pages/AuthSuccess.jsx
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -5,23 +6,17 @@ const AuthSuccess = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
     if (token) {
       localStorage.setItem("token", token);
-      // Optionally, fetch user profile here
-      navigate("/", { replace: true }); // Redirect to home or dashboard
+      navigate("/home");
     } else {
-      navigate("/signin", { replace: true });
+      navigate("/login");
     }
-  }, [navigate]);
+  }, []);
 
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="text-xl font-bold text-purple-700 mb-4">Logging you in...</div>
-      <div className="text-gray-500">Please wait.</div>
-    </div>
-  );
+  return <p>Logging you in...</p>;
 };
 
 export default AuthSuccess;

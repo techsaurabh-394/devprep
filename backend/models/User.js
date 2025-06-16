@@ -31,11 +31,10 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-userSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
+UserSchema.methods.generateAuthToken = function () {
+  return jwt.sign({ id: this._id, email: this.email }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
   });
-  return token;
 };
 
 const User = mongoose.models.user || mongoose.model("user", userSchema);
