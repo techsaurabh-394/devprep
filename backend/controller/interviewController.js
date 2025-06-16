@@ -1,10 +1,10 @@
-import axios from "axios";
+const axios = require("axios");
 
 const GOOGLE_AI_API_KEY = process.env.GOOGLE_AI_API_KEY;
 const GEMINI_API_KEY = process.env.YOUR_GEMINI_API_KEY;
 
 // Generate interview questions based on role and job description
-export const generateQuestions = async (req, res) => {
+const generateQuestions = async (req, res) => {
   const { role, jobDescription, questionCount = 15 } = req.body;
 
   if (!role || !jobDescription) {
@@ -59,7 +59,7 @@ export const generateQuestions = async (req, res) => {
 };
 
 // Evaluate recorded answers with detailed analysis
-export const evaluateAnswers = async (req, res) => {
+const evaluateAnswers = async (req, res) => {
   const { answers, questions, role, audioMetrics } = req.body;
 
   if (!answers || !Array.isArray(answers) || !questions || !role) {
@@ -184,4 +184,9 @@ export const evaluateAnswers = async (req, res) => {
       .status(500)
       .json({ message: "Failed to evaluate answers", error: error.message });
   }
+};
+
+module.exports = {
+  generateQuestions,
+  evaluateAnswers,
 };

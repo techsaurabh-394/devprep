@@ -84,6 +84,29 @@ class InterviewService {
     if (audioLevel > 220) return "distorted";
     return "clear";
   }
+
+  // Fetch questions from backend
+  static async fetchQuestions(role, jobDescription = "") {
+    const response = await fetch("/api/interview/generate-questions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ role, jobDescription }),
+    });
+    if (!response.ok) throw new Error("Failed to fetch questions");
+    const data = await response.json();
+    return data.questions;
+  }
+
+  // Submit answers for evaluation
+  static async evaluateAnswers({ role, questions, answers, audioMetrics }) {
+    const response = await fetch("/api/interview/evaluate-answers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ role, questions, answers, audioMetrics }),
+    });
+    if (!response.ok) throw new Error("Failed to evaluate answers");
+    return await response.json();
+  }
 }
 
 export default InterviewService;

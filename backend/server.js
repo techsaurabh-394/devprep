@@ -10,6 +10,7 @@ const authRoutes = require("./routes/auth");
 
 const profileRoutes = require("./routes/profile");
 const taskRoutes = require("./routes/taskRoutes");
+const interviewRoutes = require("./routes/interview");
 
 // MongoDB Connection
 connection().catch((err) => {
@@ -25,6 +26,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes); // ✅ Now /api/auth/signup and /signin work
 app.use("/api/profile", profileRoutes);
 app.use("/api/tasks", taskRoutes);
+app.use("/api/interview", interviewRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -35,5 +37,5 @@ app.use((err, req, res, next) => {
   });
 });
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
