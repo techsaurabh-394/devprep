@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const connection = require("./config/db");
+const session = require("express-session");
+const passport = require("./config/passport");
 
 // Routes
 const userRoutes = require("./routes/users");
@@ -20,6 +22,15 @@ connection().catch((err) => {
 
 app.use(cors());
 app.use(express.json());
+app.use(
+  session({
+    secret: process.env.JWT_SECRET || "devprepsecret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 // API Routes
 app.use("/api/users", userRoutes);

@@ -39,6 +39,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { WebsiteStructuredData } from "./components/StructuredData";
 import SEO from "./components/SEO";
 import { Toaster } from "react-hot-toast";
+import AuthSuccess from "./pages/AuthSuccess";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -72,6 +73,7 @@ const AppContent = () => {
       />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/signin" element={<SignIn />} />
+      <Route path="/auth/success" element={<AuthSuccess />} />
 
       {/* Protected routes */}
       <Route
