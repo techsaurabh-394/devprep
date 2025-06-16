@@ -348,16 +348,16 @@ const QUESTION_BANK = {
 const ROLE_MAP = {
   "SDE-1": "SDE-1",
   "SDE-2": "SDE-2",
-  "SDE-3": "SDE-2", // fallback to SDE-2
-  "Data Analyst": "Data Science",
-  "Data Scientist": "Data Science",
-  "Cybersecurity Engineer": "Cybersecurity",
-  "DevOps Engineer": "DevOps",
-  "QA Engineer": "SDE-1", // fallback
-  "UI/UX Designer": "Full Stack", // fallback
-  "Cloud Engineer": "Cloud",
-  "ML Engineer": "Machine Learning",
-  "Full Stack Developer": "Full Stack",
+  "SDE-3": "SDE-3", // fix: SDE-3 should map to SDE-3
+  "Data Analyst": "Data Analyst", // fix: should map to Data Analyst
+  "Data Scientist": "Data Scientist", // fix: should map to Data Scientist
+  "Cybersecurity Engineer": "Cybersecurity Engineer", // fix: should map to Cybersecurity Engineer
+  "DevOps Engineer": "DevOps Engineer", // fix: should map to DevOps Engineer
+  "QA Engineer": "QA Engineer", // fix: should map to QA Engineer
+  "UI/UX Designer": "UI/UX Designer", // fix: should map to UI/UX Designer
+  "Cloud Engineer": "Cloud Engineer", // fix: should map to Cloud Engineer
+  "ML Engineer": "ML Engineer", // fix: should map to ML Engineer
+  "Full Stack Developer": "Full Stack Developer", // fix: should map to Full Stack Developer
 };
 
 function getRandomQuestions(role, min = 12, max = 15) {
@@ -383,6 +383,7 @@ const Interview = () => {
   const [feedbackMsg, setFeedbackMsg] = useState("");
   const [error, setError] = useState(null);
   const videoRef = useRef(null);
+  const [questionElapsed, setQuestionElapsed] = useState(0);
 
   // Start interview: randomize questions
   const startInterview = () => {
@@ -395,27 +396,41 @@ const Interview = () => {
     setCurrentAnswer("");
     setFeedbackMsg("");
     setError(null);
+    setQuestionElapsed(0);
+  };
+
+  // Stop interview
+  const stopInterview = () => {
+    setInterviewStarted(false);
+    setShowReport(true);
   };
 
   // Timer for each question
   useEffect(() => {
     if (!interviewStarted) return;
+    let timer;
     if (timeLeft > 0 && isRecording) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearTimeout(timer);
+      timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
     } else if (timeLeft === 0 && isRecording) {
       stopRecording();
     }
+    return () => clearTimeout(timer);
   }, [timeLeft, isRecording, interviewStarted]);
 
-  // Session timer
+  // Elapsed timer for each question
   useEffect(() => {
     if (!interviewStarted) return;
+    if (!isRecording) return;
     const timer = setInterval(() => {
-      setSessionTime((prev) => prev + 1);
+      setQuestionElapsed((prev) => prev + 1);
     }, 1000);
     return () => clearInterval(timer);
-  }, [interviewStarted]);
+  }, [isRecording, interviewStarted, currentQuestionIndex]);
+
+  // Reset question timer on new question
+  useEffect(() => {
+    setQuestionElapsed(0);
+  }, [currentQuestionIndex]);
 
   // Webcam setup
   useEffect(() => {
@@ -440,6 +455,7 @@ const Interview = () => {
   const startRecording = () => {
     setIsRecording(true);
     setFeedbackMsg("");
+    setQuestionElapsed(0);
   };
   const stopRecording = () => {
     setIsRecording(false);
@@ -564,6 +580,8 @@ const Interview = () => {
           <div className="flex items-center gap-4">
             <span className="text-gray-600 font-medium">Time Left:</span>
             <span className="text-2xl font-mono text-blue-600 bg-blue-100 px-3 py-1 rounded-lg shadow-inner">{timeLeft}s</span>
+            <span className="ml-6 text-gray-600 font-medium">Elapsed:</span>
+            <span className="text-2xl font-mono text-purple-600 bg-purple-100 px-3 py-1 rounded-lg shadow-inner">{questionElapsed}s</span>
           </div>
         </div>
         <div className="mb-8">
@@ -579,36 +597,23 @@ const Interview = () => {
             disabled={isRecording}
           />
           <div className="flex flex-col md:flex-row gap-4">
-            <button
-              onClick={startRecording}
-              disabled={isRecording}
-              className="flex-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-3 rounded-xl font-bold text-lg shadow-md hover:scale-105 transition-transform duration-200 flex items-center justify-center gap-2"
-            >
-              {isRecording ? (
-                <>
-                  <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                  <span>Recording...</span>
-                </>
-              ) : (
-                <>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-                  </svg>
-                  <span>Start Recording</span>
-                </>
-              )}
-            </button>
-            <button
-              onClick={stopRecording}
-              disabled={!isRecording}
-              className="flex-1 bg-gradient-to-r from-red-400 to-pink-500 text-white px-4 py-3 rounded-xl font-bold text-lg shadow-md hover:scale-105 transition-transform duration-200 flex items-center justify-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
-              </svg>
-              <span>Stop Recording</span>
-            </button>
+            {/* Start/Stop Interview Button */}
+            {!isRecording ? (
+              <button
+                onClick={startRecording}
+                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-500 text-white px-4 py-3 rounded-xl font-bold text-lg shadow-md hover:scale-105 transition-transform duration-200 flex items-center justify-center gap-2"
+              >
+                Start
+              </button>
+            ) : (
+              <button
+                onClick={stopRecording}
+                className="flex-1 bg-gradient-to-r from-red-400 to-pink-500 text-white px-4 py-3 rounded-xl font-bold text-lg shadow-md hover:scale-105 transition-transform duration-200 flex items-center justify-center gap-2"
+              >
+                Stop
+              </button>
+            )}
+            {/* Next/Submit Button */}
             {currentQuestionIndex < questions.length - 1 ? (
               <button
                 onClick={() => handleAnswerSubmit(currentAnswer)}

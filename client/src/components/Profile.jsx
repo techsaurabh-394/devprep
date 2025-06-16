@@ -190,6 +190,55 @@ const Profile = () => {
 
         {/* Profile Content */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+          {/* Professional Profile Card */}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-6">
+            <div className="flex items-center gap-4">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary-500 to-purple-400 flex items-center justify-center text-3xl font-bold text-white shadow-lg border-4 border-primary-200">
+                {profileData.personal.name
+                  ? profileData.personal.name[0]
+                  : profileData.personal.email
+                  ? profileData.personal.email[0]
+                  : "U"}
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                  {profileData.personal.name || "Your Name"}
+                </div>
+                <div className="text-gray-500 dark:text-gray-300 text-sm">
+                  {profileData.personal.email || "your@email.com"}
+                </div>
+                <div className="text-primary-600 dark:text-primary-400 text-xs mt-1 font-semibold">
+                  {profileData.personal.location || "Location"}
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col items-end gap-2">
+              <span className="inline-block bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300 px-3 py-1 rounded-full text-xs font-semibold">
+                {profileData.personal.role || "Candidate"}
+              </span>
+              {profileData.personal.github && (
+                <a
+                  href={profileData.personal.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 text-sm flex items-center gap-1"
+                >
+                  <GithubIcon className="w-4 h-4" /> GitHub
+                </a>
+              )}
+              {profileData.personal.linkedin && (
+                <a
+                  href={profileData.personal.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-700 dark:text-blue-400 hover:underline text-sm flex items-center gap-1"
+                >
+                  <Linkedin className="w-4 h-4" /> LinkedIn
+                </a>
+              )}
+            </div>
+          </div>
+
           {/* Personal Information */}
           <div className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
