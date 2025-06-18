@@ -11,11 +11,19 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        let user = await User.findOne({ email: profile.emails[0].value });
+        // Check if emails array exists and has at least one email
+        const email =
+          profile.emails && profile.emails.length > 0
+            ? profile.emails[0].value
+            : null;
+        if (!email) {
+          return done(new Error("No email found in GitHub profile"), null);
+        }
+        let user = await User.findOne({ email: email });
         if (!user) {
           user = new User({
             username: profile.username || profile.displayName,
-            email: profile.emails[0].value,
+            email: email,
             password: profile.id,
           });
           await user.save();
