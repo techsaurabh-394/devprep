@@ -7,7 +7,7 @@ const LandingPage = () => {
   return (
     <div
       id="home"
-      className="relative min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 overflow-hidden"
+      className="relative min-h-screen bg-gradient-to-b from-[#cb4154] to-[#cb4154] overflow-hidden"
     >
       {/* Animated Background with Grid */}
       <div className="absolute inset-0">
@@ -98,7 +98,7 @@ const LandingPage = () => {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <span className="relative inline-block px-4 py-2 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-lg">
+                <span className="relative inline-block px-4 py-2 bg-[#cb4154] rounded-lg">
                   <span className="relative text-white">Tech Journey</span>
                 </span>
               </motion.span>
