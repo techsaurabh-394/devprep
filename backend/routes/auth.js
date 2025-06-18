@@ -17,7 +17,9 @@ router.get(
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
+  passport.authenticate("google", {
+    failureRedirect: `${process.env.CLIENT_URL}/signin`,
+  }),
   (req, res) => {
     const token = req.user.generateAuthToken();
     res.redirect(`${process.env.CLIENT_URL}/auth/success?token=${token}`);
@@ -32,7 +34,9 @@ router.get(
 
 router.get(
   "/github/callback",
-  passport.authenticate("github", { failureRedirect: "/login" }),
+  passport.authenticate("github", {
+    failureRedirect: `${process.env.CLIENT_URL}/signin`,
+  }),
   (req, res) => {
     const token = req.user.generateAuthToken();
     res.redirect(`${process.env.CLIENT_URL}/auth/success?token=${token}`);
