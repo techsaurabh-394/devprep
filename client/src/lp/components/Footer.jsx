@@ -106,11 +106,11 @@ const Footer = () => {
               Have questions? Reach out to us anytime.
             </p>
             <motion.a
-              href="mailto:info@10xcoders.com"
+              href="mailto:saurabh@mernstackdev.com"
               className="text-cyan-400 hover:text-cyan-300 transition-colors inline-flex items-center group"
               whileHover={{ x: 5 }}
             >
-              info@10xcoders.com
+              saurabh@mernstackdev.com
               <svg
                 className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform"
                 fill="none"
@@ -136,7 +136,7 @@ const Footer = () => {
           viewport={{ once: true }}
           className="text-center text-gray-400 pt-8 border-t border-slate-800"
         >
-          <p>© 2023 10xCoders. All rights reserved.</p>
+          <p>© 2025 DevPrep. All rights reserved.</p>
         </motion.div>
       </div>
     </footer>
