@@ -16,7 +16,7 @@ const SEO = ({
     description ||
     "DevPrep helps developers ace technical interviews with AI-powered mock interviews, resume building, coding practice, and personalized learning paths.";
   const defaultKeywords =
-    "developer interview preparation, coding interview, technical interview, mock interview, software engineering interview, programming interview questions, resume builder for developers, coding practice, machine coding, system design interview";
+    "developer interview preparation, coding interview, technical interview, mock interview, software engineering interview, programming interview questions, resume builder for developers, coding practice, machine coding, system design interview, interview tips, coding challenges, behavioral interview, interview coaching, job interview preparation, software developer jobs, interview questions and answers, coding interview preparation, technical resume tips, interview feedback, career development, interview strategies";
 
   return (
     <Helmet>
