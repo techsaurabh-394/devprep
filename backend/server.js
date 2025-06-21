@@ -13,6 +13,7 @@ const authRoutes = require("./routes/auth");
 const profileRoutes = require("./routes/profile");
 const taskRoutes = require("./routes/taskRoutes");
 const interviewRoutes = require("./routes/interview");
+const aiRoutes = require("./routes/ai");
 
 // MongoDB Connection
 connection().catch((err) => {
@@ -38,6 +39,7 @@ app.use("/api/auth", authRoutes); // ✅ Now /api/auth/signup and /signin work
 app.use("/api/profile", profileRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/interview", interviewRoutes);
+app.use("/api/ai", aiRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
