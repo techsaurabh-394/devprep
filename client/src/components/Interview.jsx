@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import InterviewReport from "./InterviewReport";
 
@@ -368,6 +368,26 @@ function getRandomQuestions(role, min = 12, max = 15) {
   return shuffled.slice(0, count);
 }
 
+// Helper to detect question type
+function getQuestionType(question) {
+  if (/sql/i.test(question)) return "SQL";
+  if (/code|program|implement|function|method|write|algorithm/i.test(question))
+    return "Coding";
+  if (
+    /data structure|array|tree|graph|sort|search|dsa|linked list|stack|queue|heap|trie|binary|bfs|dfs|recursion|dynamic programming/i.test(
+      question
+    )
+  )
+    return "DSA";
+  if (
+    /scenario|situation|case|team|project|experience|challenge|conflict|lead|mentor|feedback|collaborate|stakeholder|deadline|stress|mistake|failure|success|motivate|improve|learn|growth/i.test(
+      question
+    )
+  )
+    return "Behavioral";
+  return "General";
+}
+
 const Interview = () => {
   const { role } = useParams();
   const navigate = useNavigate();
@@ -406,7 +426,7 @@ const Interview = () => {
     } else if (timeLeft === 0 && isRecording) {
       stopRecording();
     }
-  }, [timeLeft, isRecording, interviewStarted]);
+  }, [timeLeft, isRecording, interviewStarted, stopRecording]);
 
   // Session timer
   useEffect(() => {
@@ -421,14 +441,19 @@ const Interview = () => {
   useEffect(() => {
     if (!interviewStarted) return;
     let stream;
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices
+      .getUserMedia({ video: true })
       .then((s) => {
         stream = s;
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
         }
       })
-      .catch(() => setError("Webcam access is required and was denied. Please allow webcam access and refresh the page."));
+      .catch(() =>
+        setError(
+          "Webcam access is required and was denied. Please allow webcam access and refresh the page."
+        )
+      );
     return () => {
       if (stream) {
         stream.getTracks().forEach((track) => track.stop());
@@ -441,11 +466,14 @@ const Interview = () => {
     setIsRecording(true);
     setFeedbackMsg("");
   };
-  const stopRecording = () => {
+  const stopRecording = useCallback(() => {
     setIsRecording(false);
-    setFeedbackMsg("Answer recorded! Good job, review your answer for clarity and completeness.");
+    setFeedbackMsg(
+      "Answer recorded! Good job, review your answer for clarity and completeness."
+    );
     handleAnswerSubmit(currentAnswer);
-  };
+    // eslint-disable-next-line
+  }, [currentAnswer]);
 
   // Handle answer submission and move to next question
   const handleAnswerSubmit = (answer) => {
@@ -464,9 +492,12 @@ const Interview = () => {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100 p-4">
         <div className="bg-white rounded-2xl shadow-2xl p-10 max-w-xl w-full text-center">
-          <h1 className="text-4xl font-bold text-purple-800 mb-4">{role} Interview</h1>
+          <h1 className="text-4xl font-bold text-purple-800 mb-4">
+            {role} Interview
+          </h1>
           <p className="text-lg text-gray-600 mb-8">
-            Get ready for a real technical interview experience! You will have 1 minute per question. Click below to begin.
+            Get ready for a real technical interview experience! You will have 1
+            minute per question. Click below to begin.
           </p>
           <button
             onClick={startInterview}
@@ -485,19 +516,30 @@ const Interview = () => {
     const questionAnalysis = questions.map((question, i) => {
       const answer = userAnswers[i] || "";
       const length = answer.length;
-      const hasExample = /example|project|experience|once|case|situation|solved|handled/i.test(answer);
-      const hasTech = /api|class|function|sql|cloud|security|test|model|data|design|pattern|architecture|deploy|bug|framework|tool|algorithm|database|frontend|backend|devops|ml|ai|ux|ui|server|client|code|debug|performance|optimize|feature|component|object|array|loop|variable|const|let|closure|promise|async|await|thread|process|docker|kubernetes|aws|azure|gcp|ci|cd|pipeline|microservice|monolith|cache|queue|message|broker|socket|rest|graphql|pwa|cdn|proxy|load balancer|auth|jwt|token|encryption|firewall|vpn|test|suite|coverage|regression|selenium|jest|mocha|chai|cypress|unit|integration|e2e|automation|manual|agile|scrum|kanban|jira|git|github|bitbucket|gitlab|branch|merge|pull|push|commit|review|lint|format|prettier|eslint|typescript|javascript|python|java|c#|c\+\+|php|ruby|go|rust|swift|kotlin|scala|dart|flutter|react|angular|vue|svelte|next|nuxt|node|express|spring|django|flask|laravel|rails|dotnet|asp|android|ios|mobile|web|desktop|cloud|serverless|lambda|function|api|endpoint|route|controller|service|repository|dao|orm|sql|nosql|mongodb|mysql|postgres|redis|elasticsearch|kafka|rabbitmq|sqs|sns|pubsub|event|listener|handler|callback|promise|observable|stream|buffer|queue|topic|partition|consumer|producer|subscriber|publisher|eventbus|eventstore|eventlog|eventsource|eventdriven|eventloop|eventemitter|eventhandler|eventlistener|eventsubscriber|eventpublisher|eventprocessor|eventaggregator|eventdispatcher|eventrouter|eventbroker|eventgateway|eventbridge|eventmesh|eventgrid|eventhub/i.test(answer);
+      const hasExample =
+        /example|project|experience|once|case|situation|solved|handled/i.test(
+          answer
+        );
+      const hasTech =
+        /api|class|function|sql|cloud|security|test|model|data|design|pattern|architecture|deploy|bug|framework|tool|algorithm|database|frontend|backend|devops|ml|ai|ux|ui|server|client|code|debug|performance|optimize|feature|component|object|array|loop|variable|const|let|closure|promise|async|await|thread|process|docker|kubernetes|aws|azure|gcp|ci|cd|pipeline|microservice|monolith|cache|queue|message|broker|socket|rest|graphql|pwa|cdn|proxy|load balancer|auth|jwt|token|encryption|firewall|vpn|test|suite|coverage|regression|selenium|jest|mocha|chai|cypress|unit|integration|e2e|automation|manual|agile|scrum|kanban|jira|git|github|bitbucket|gitlab|branch|merge|pull|push|commit|review|lint|format|prettier|eslint|typescript|javascript|python|java|c#|c\+\+|php|ruby|go|rust|swift|kotlin|scala|dart|flutter|react|angular|vue|svelte|next|nuxt|node|express|spring|django|flask|laravel|rails|dotnet|asp|android|ios|mobile|web|desktop|cloud|serverless|lambda|function|api|endpoint|route|controller|service|repository|dao|orm|sql|nosql|mongodb|mysql|postgres|redis|elasticsearch|kafka|rabbitmq|sqs|sns|pubsub|event|listener|handler|callback|promise|observable|stream|buffer|queue|topic|partition|consumer|producer|subscriber|publisher|eventbus|eventstore|eventlog|eventsource|eventdriven|eventloop|eventemitter|eventhandler|eventlistener|eventsubscriber|eventpublisher|eventprocessor|eventaggregator|eventdispatcher|eventrouter|eventbroker|eventgateway|eventbridge|eventmesh|eventgrid|eventhub/i.test(
+          answer
+        );
       let score = 5 + Math.floor(Math.random() * 6); // 5-10
       let feedback = "";
       let improvements = [];
       if (!answer.trim()) {
         score = 0;
-        feedback = "No answer provided. Please attempt every question for better feedback.";
+        feedback =
+          "No answer provided. Please attempt every question for better feedback.";
         improvements = ["Write or record an answer next time."];
       } else if (length > 120 && hasExample && hasTech) {
         score = 9 + Math.floor(Math.random() * 2); // 9-10
-        feedback = "Excellent! You gave a detailed, technical answer with a real example. This is the level expected in top interviews.";
-        improvements = ["Keep up the depth and clarity.", "Consider adding even more real-world impact."];
+        feedback =
+          "Excellent! You gave a detailed, technical answer with a real example. This is the level expected in top interviews.";
+        improvements = [
+          "Keep up the depth and clarity.",
+          "Consider adding even more real-world impact.",
+        ];
       } else if (length > 60 && (hasExample || hasTech)) {
         score = 7 + Math.floor(Math.random() * 2); // 7-8
         feedback = hasExample
@@ -506,24 +548,38 @@ const Interview = () => {
         improvements = ["Add more detail or a real project experience."];
       } else if (length > 30) {
         score = 5 + Math.floor(Math.random() * 2); // 5-6
-        feedback = "Decent answer, but you can elaborate more and give examples or technical depth.";
-        improvements = ["Expand your answer.", "Give a real project or technical example."];
+        feedback =
+          "Decent answer, but you can elaborate more and give examples or technical depth.";
+        improvements = [
+          "Expand your answer.",
+          "Give a real project or technical example.",
+        ];
       } else {
         score = 3 + Math.floor(Math.random() * 2); // 3-4
-        feedback = "Too short. Try to write or say more, and include technical details or a story.";
-        improvements = ["Write a longer answer.", "Add technical terms and examples."];
+        feedback =
+          "Too short. Try to write or say more, and include technical details or a story.";
+        improvements = [
+          "Write a longer answer.",
+          "Add technical terms and examples.",
+        ];
       }
       return { question, answer, score, feedback, improvements };
     });
     const totalScore = questionAnalysis.reduce((sum, q) => sum + q.score, 0);
-    const overallScore = Math.round((totalScore / (questions.length * 10)) * 100);
+    const overallScore = Math.round(
+      (totalScore / (questions.length * 10)) * 100
+    );
     const strengths = [
       overallScore > 80 ? "Strong technical depth" : "Good effort",
       overallScore > 60 ? "Clear communication" : "Needs more detail",
     ];
     const areasToImprove = [
-      overallScore < 90 ? "Add more real-world examples" : "Keep up the great work!",
-      overallScore < 70 ? "Expand on technical details" : "Try to be even more concise",
+      overallScore < 90
+        ? "Add more real-world examples"
+        : "Keep up the great work!",
+      overallScore < 70
+        ? "Expand on technical details"
+        : "Try to be even more concise",
     ];
     const recommendations =
       overallScore > 80
@@ -556,27 +612,74 @@ const Interview = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200 flex flex-col items-center justify-center p-4">
       <div className="relative bg-white rounded-3xl shadow-2xl p-8 max-w-2xl w-full border-2 border-purple-200">
         {/* Webcam always visible */}
-        <video ref={videoRef} autoPlay muted playsInline className="absolute top-4 right-4 w-32 h-24 rounded-xl border-4 border-purple-400 shadow-lg z-10 bg-black" />
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          playsInline
+          className="absolute top-4 right-4 w-32 h-24 rounded-xl border-4 border-purple-400 shadow-lg z-10 bg-black"
+        />
         <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between">
           <h2 className="text-3xl font-extrabold text-purple-800 mb-2 md:mb-0 tracking-tight">
-            Question {currentQuestionIndex + 1} <span className="text-lg font-normal text-gray-500">/ {questions.length}</span>
+            Question {currentQuestionIndex + 1}{" "}
+            <span className="text-lg font-normal text-gray-500">
+              / {questions.length}
+            </span>
           </h2>
           <div className="flex items-center gap-4">
             <span className="text-gray-600 font-medium">Time Left:</span>
-            <span className="text-2xl font-mono text-blue-600 bg-blue-100 px-3 py-1 rounded-lg shadow-inner">{timeLeft}s</span>
+            <span className="text-2xl font-mono text-blue-600 bg-blue-100 px-3 py-1 rounded-lg shadow-inner">
+              {timeLeft}s
+            </span>
           </div>
         </div>
         <div className="mb-8">
-          <h3 className="text-2xl font-semibold text-gray-700 mb-6 bg-gradient-to-r from-purple-100 to-blue-100 px-4 py-2 rounded-xl shadow-sm">
-            {questions[currentQuestionIndex]}
-          </h3>
+          <div className="flex items-center gap-3 mb-2">
+            <h3 className="text-2xl font-semibold text-gray-700 bg-gradient-to-r from-purple-100 to-blue-100 px-4 py-2 rounded-xl shadow-sm">
+              {questions[currentQuestionIndex]}
+            </h3>
+            {/* Badge for question type */}
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-bold shadow-md ${(() => {
+                const type = getQuestionType(questions[currentQuestionIndex]);
+                if (type === "Coding") return "bg-blue-700 text-white";
+                if (type === "SQL") return "bg-green-600 text-white";
+                if (type === "DSA") return "bg-orange-500 text-white";
+                if (type === "Behavioral") return "bg-pink-400 text-white";
+                return "bg-gray-300 text-gray-800";
+              })()}`}
+            >
+              {getQuestionType(questions[currentQuestionIndex])}
+            </span>
+          </div>
           <textarea
-            className="w-full p-4 border-2 border-purple-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 text-gray-800 mb-4 text-lg shadow-sm resize-none"
+            className={`w-full p-4 border-2 rounded-xl focus:outline-none focus:ring-2 text-lg shadow-sm resize-none font-${
+              ["Coding", "SQL", "DSA"].includes(
+                getQuestionType(questions[currentQuestionIndex])
+              )
+                ? "mono"
+                : "sans"
+            } ${
+              ["Coding", "SQL", "DSA"].includes(
+                getQuestionType(questions[currentQuestionIndex])
+              )
+                ? "bg-gray-900 text-green-200 border-blue-400 focus:ring-blue-600"
+                : "border-purple-200 focus:ring-purple-400 text-gray-800 bg-white"
+            }`}
             rows={4}
             value={currentAnswer}
             onChange={(e) => setCurrentAnswer(e.target.value)}
-            placeholder="Type your answer or use the mic..."
+            placeholder={
+              getQuestionType(questions[currentQuestionIndex]) === "Coding"
+                ? "Write your code here..."
+                : getQuestionType(questions[currentQuestionIndex]) === "SQL"
+                ? "Write your SQL query here..."
+                : "Type your answer or use the mic..."
+            }
             disabled={isRecording}
+            spellCheck={false}
+            autoCorrect="off"
+            autoCapitalize="off"
           />
           <div className="flex flex-col md:flex-row gap-4">
             <button
@@ -591,8 +694,18 @@ const Interview = () => {
                 </>
               ) : (
                 <>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                    />
                   </svg>
                   <span>Start Recording</span>
                 </>
@@ -603,9 +716,24 @@ const Interview = () => {
               disabled={!isRecording}
               className="flex-1 bg-gradient-to-r from-red-400 to-pink-500 text-white px-4 py-3 rounded-xl font-bold text-lg shadow-md hover:scale-105 transition-transform duration-200 flex items-center justify-center gap-2"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"
+                />
               </svg>
               <span>Stop Recording</span>
             </button>
@@ -627,11 +755,27 @@ const Interview = () => {
               </button>
             )}
           </div>
-          {feedbackMsg && <div className="mt-4 text-green-700 font-semibold bg-green-100 px-4 py-2 rounded-xl shadow-sm">{feedbackMsg}</div>}
+          {feedbackMsg && (
+            <div className="mt-4 text-green-700 font-semibold bg-green-100 px-4 py-2 rounded-xl shadow-sm">
+              {feedbackMsg}
+            </div>
+          )}
         </div>
         <div className="mt-8 flex justify-between text-gray-500 text-base">
-          <div>Answered: <span className="font-bold text-purple-700">{userAnswers.length}</span> / {questions.length}</div>
-          <div>Session Time: <span className="font-bold text-blue-700">{Math.round(sessionTime / 60)}</span> min</div>
+          <div>
+            Answered:{" "}
+            <span className="font-bold text-purple-700">
+              {userAnswers.length}
+            </span>{" "}
+            / {questions.length}
+          </div>
+          <div>
+            Session Time:{" "}
+            <span className="font-bold text-blue-700">
+              {Math.round(sessionTime / 60)}
+            </span>{" "}
+            min
+          </div>
         </div>
       </div>
     </div>

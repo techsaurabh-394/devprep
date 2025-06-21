@@ -7,8 +7,18 @@ const LandingPage = () => {
   return (
     <div
       id="home"
-      className="relative min-h-screen bg-gradient-to-b from-[#cb4154] to-[#cb4154] overflow-hidden"
+      className="relative min-h-screen bg-gradient-to-br from-[#cb4154] via-[#ee7d8a] to-[#3b82f6] overflow-hidden"
     >
+      {/* Animated Glassmorphism Overlay */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-white/0 backdrop-blur-2xl animate-gradient opacity-80"
+          style={{
+            backgroundSize: "200% 200%",
+            animation: "gradient 8s linear infinite",
+          }}
+        />
+      </div>
       {/* Animated Background with Grid */}
       <div className="absolute inset-0">
         <div
@@ -84,12 +94,12 @@ const LandingPage = () => {
         >
           {/* Main Heading */}
           <motion.h1
-            className="text-7xl md:text-8xl font-bold text-center leading-tight"
+            className="text-7xl md:text-8xl font-extrabold text-center leading-tight drop-shadow-xl"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-200 to-blue-400 animate-gradient">
               Master Your
             </span>
             <div className="mt-2">
@@ -98,7 +108,7 @@ const LandingPage = () => {
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
-                <span className="relative inline-block px-4 py-2 bg-[#cb4154] rounded-lg">
+                <span className="relative inline-block px-4 py-2 bg-gradient-to-r from-[#e54d5e] via-[#ee7d8a] to-[#3b82f6] rounded-2xl shadow-lg shadow-pink-200/30 animate-gradient">
                   <span className="relative text-white">Tech Journey</span>
                 </span>
               </motion.span>
@@ -107,7 +117,7 @@ const LandingPage = () => {
 
           {/* Animated Subheading */}
           <motion.p
-            className="text-xl md:text-2xl text-center font-medium text-gray-400 mt-8 max-w-3xl mx-auto leading-relaxed"
+            className="text-xl md:text-2xl text-center font-medium text-white/90 mt-8 max-w-3xl mx-auto leading-relaxed drop-shadow-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
@@ -126,9 +136,9 @@ const LandingPage = () => {
           >
             <motion.a
               href="/signup"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all duration-300"
+              whileHover={{ scale: 1.07 }}
+              whileTap={{ scale: 0.97 }}
+              className="px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-pink-500 via-fuchsia-500 to-blue-600 rounded-2xl shadow-xl shadow-pink-200/30 hover:shadow-fuchsia-400/40 transition-all duration-300 animate-gradient border-2 border-white/10"
             >
               Get Started Free
             </motion.a>
@@ -136,7 +146,7 @@ const LandingPage = () => {
               href="#features"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 text-lg font-semibold text-gray-300 border-2 border-gray-700 hover:border-gray-600 rounded-xl hover:bg-gray-800/50 transition-all duration-300"
+              className="px-8 py-4 text-lg font-semibold text-white/80 border-2 border-white/20 hover:border-white/40 rounded-2xl hover:bg-white/10 transition-all duration-300 backdrop-blur-md"
             >
               Explore Features
             </motion.a>
