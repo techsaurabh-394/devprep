@@ -21,11 +21,17 @@ const generateQuestions = async (req, res) => {
   }
 
   try {
-    // Example prompt to generate questions
+    // Enhanced prompt to include coding, SQL, and DSA questions
     const prompt =
-      "Generate 15 interview questions for the role of " +
-      role +
-      ". Include basic concepts, role-specific technical questions, and soft-skill or scenario-based questions.";
+      `Generate ${questionCount} diverse interview questions for the role of ${role} based on the following job description: ${jobDescription}.\n` +
+      `Include:\n` +
+      `- At least 3 coding/programming questions where the user must write code (provide clear problem statements, not just theoretical)\n` +
+      `- At least 1 SQL query question (ask for a specific SQL query to solve a problem)\n` +
+      `- At least 1 Data Structures & Algorithms (DSA) question (e.g., array, string, tree, graph, sorting, searching, etc.)\n` +
+      `- Basic concepts\n` +
+      `- Role-specific technical questions\n` +
+      `- Soft-skill or scenario-based questions\n` +
+      `Return the questions as a numbered list. Clearly indicate which questions are coding, SQL, or DSA.`;
 
     const response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
@@ -97,8 +103,10 @@ const evaluateAnswers = async (req, res) => {
           "pace": "analysis of speaking pace",
           "clarity": "analysis of speech clarity",
           "confidence": "analysis of speaking confidence"
-        }
-      }`;
+        },
+        "questionType": "theoretical | coding | scenario"
+      }
+      If the question is a coding question, provide feedback on code structure, logic, efficiency, and possible improvements. If not, focus on content and communication. Feedback should be actionable and specific to the question.`;
 
       const response = await axios.post(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
