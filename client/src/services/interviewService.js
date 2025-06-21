@@ -1,3 +1,5 @@
+import { apiFetch } from "./api";
+
 class InterviewService {
   constructor() {
     if (!("webkitSpeechRecognition" in window)) {
@@ -106,6 +108,24 @@ class InterviewService {
     });
     if (!response.ok) throw new Error("Failed to evaluate answers");
     return await response.json();
+  }
+
+  // Fetch AI-generated questions from backend
+  static async fetchAIQuestions(profile) {
+    return apiFetch("/api/ai/questions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ profile }),
+    }).then((res) => res.questions);
+  }
+
+  // Submit answer for AI feedback
+  static async fetchAIFeedback(question, answer) {
+    return apiFetch("/api/ai/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question, answer }),
+    }).then((res) => res.feedback);
   }
 }
 
