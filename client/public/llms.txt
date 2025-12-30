@@ -1,0 +1,21 @@
+# DevPrep - Developer Interview Preparation Platform
+> Complete platform for developer interview preparation, mock interviews, resume building, and skill enhancement.
+
+This file guides AI language models on how to interact with our site's content.
+
+## Core Pages
+- [/]: Main landing page.
+- [/signin]: Sign in page for existing users.
+- [/signup]: Sign up page for new users.
+
+## Main Features
+- [/home]: User dashboard after signing in.
+- [/skills]: Skill assessment and practice area.
+- [/roadmap]: Personalized learning roadmaps.
+- [/interview]: Mock interview preparation.
+- [/resume-form]: Build and enhance your resume.
+- [/machine-coding]: Practice machine coding rounds.
+- [/esmoai]: AI-powered learning assistant.
+- [/plan-your-day]: Schedule your preparation tasks.
+- [/community]: Community forum.
+- [/findevents]: Find tech events.

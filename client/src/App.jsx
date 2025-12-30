@@ -35,7 +35,7 @@ import EnhanceResume from "./pages/EnhanceResume";
 import AdditionalInterview from "./components/AdditionalInterview";
 import MachineCode from "./pages/MachineCode";
 import TypingTest from "./pages/TypingTest";
-import { HelmetProvider } from "react-helmet-async";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 import { WebsiteStructuredData } from "./components/StructuredData";
 import SEO from "./components/SEO";
 import { Toaster } from "react-hot-toast";
@@ -121,6 +121,13 @@ const AppContent = () => {
 function App() {
   return (
     <HelmetProvider>
+      <Helmet>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6093608492043000"
+          crossOrigin="anonymous"
+        ></script>
+      </Helmet>
       <SEO />
       <WebsiteStructuredData />
       <Router>

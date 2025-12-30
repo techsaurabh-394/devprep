@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /api/
-Disallow: /admin/
-Disallow: /private/
 
-Sitemap: https://devprep.com/sitemap.xml
+Sitemap: https://your-domain.com/sitemap.xml

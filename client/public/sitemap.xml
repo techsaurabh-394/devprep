@@ -1,45 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Please replace https://your-domain.com with your actual domain.
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://devprep.com/</loc>
-    <lastmod>2025-06-07</lastmod>
-    <changefreq>daily</changefreq>
+    <loc>https://your-domain.com/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://devprep.com/interview</loc>
-    <lastmod>2025-06-07</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://your-domain.com/signup</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/signin</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/home</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://devprep.com/machine-coding</loc>
-    <lastmod>2025-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://devprep.com/resume</loc>
-    <lastmod>2025-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://devprep.com/plan-your-day</loc>
-    <lastmod>2025-06-07</lastmod>
-    <changefreq>daily</changefreq>
+    <loc>https://your-domain.com/skills</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://devprep.com/skills</loc>
-    <lastmod>2025-06-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://your-domain.com/roadmap</loc>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://devprep.com/community</loc>
-    <lastmod>2025-06-07</lastmod>
-    <changefreq>daily</changefreq>
+    <loc>https://your-domain.com/community</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/esmoai</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/findevents</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/interview</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/career</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/plan-your-day</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/resume-form</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/personalized-roadmap</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/enhance-resume</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/machine-coding</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://your-domain.com/typing-test</loc>
     <priority>0.7</priority>
   </url>
 </urlset>
